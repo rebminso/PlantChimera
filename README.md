@@ -32,7 +32,7 @@ all the required packages. This README covers the use of the Docker version of t
 
 #### a) Mounting the working directory of your local system
 ```bash
-    docker run -it -v /path/to/local/directory:/pipeline nmrtsahu/plantchimera:latest /bin/bash
+    docker run -it -v /path/to/local/directory:/data nmrtsahu/plantchimera:latest /bin/bash
 ```
 This will open a shell in the container, allowing you to view and interact with the files (e.g., scripts and the config.yaml file and the output) in the mounted directory on your local machine. Users can modify the parameters in the config.yaml file as needed to suit their requirements. Run the PlantChimera.sh  in a shell in the container. To exit the shell without stopping the container, press Ctrl + P followed by Ctrl + Q.
 
@@ -41,7 +41,7 @@ This will open a shell in the container, allowing you to view and interact with 
 ```
 #### b) Or running without interacting the shell in the container  
 ```bash
-    Docker run -it -v /path/to/local/directory:/pipeline nmrtsahu/plantchimera:latest “./PlantChimera.sh -h” 
+    Docker run -it -v /path/to/local/directory:/data nmrtsahu/plantchimera:latest “./PlantChimera.sh -h” 
 ```
 OR
 
@@ -89,10 +89,11 @@ The configuration of the workflow can be altered by modifying the `config/config
     -o <SAMPLE_OUTPUT>    Path to the output folder (required), Note: only enter the name of the sample eg SRR16989272 
     -t <threads>          Number of threads to use (default: 4)
     -s <species>          Species specific output folder (required), Note: folder name should be without space eg. arabidopsis_thaliana or ath
+    -p <paralogue_gene>   Path to the paralogue gene file generated from get_paralogues.R Rscript
     -h                    Display this help message
 
     Description:
-    PLantChimera: A novel fusion detection pipeline for plants.
+    PLantChimera: A novel fusion detection  for plants.
 
 ```
 
@@ -145,17 +146,32 @@ git clone https://github.com/rebminso/PlantChimera.git
 cd PlantChimera
 unzip input/sample/*    
 docker pull nmrtsahu/plantchimera:latest 
-sudo docker run -it -v $PWD:/pipeline nmrtsahu/plantchimera:latest /bin/bash
+sudo docker run -it -v $PWD:/data nmrtsahu/plantchimera:latest /bin/bash
 ```
 ### Run the following command to execute PlantChimera
 ``` bash
-./PlantChimera.sh -r input/arab/Arabidopsis_thaliana.TAIR10.dna.toplevel.fa -i input/arab/dump_1.fastq  -I input/arab/dump_2.fastq -g input/arab/Arabidopsis_thaliana.TAIR10.56.gtf -T input/arab/Arabidopsis_thaliana.TAIR10.cdna.all.fa -o sample -t 8 -s dump
+./PlantChimera.sh -r input/arab/Arabidopsis_thaliana.TAIR10.dna.toplevel.fa -i input/arab/dump_1.fastq  -I input/arab/dump_2.fastq -g input/arab/Arabidopsis_thaliana.TAIR10.56.gtf -T input/arab/Arabidopsis_thaliana.TAIR10.cdna.all.fa -o sample -t 8 -s ath -p paralogue_gene.txt
 ```
 The output will be genrated in the output folder 
 
 
-## 7. FAQs
-adsfadfadfadfadf
+## 7. How to run get_paralogues.R Rscript:
+to get the paralogue genes of ensembl plants then just replace the athaliana_eg_gene to your intersest plant dataste name from the ensembl plant dataset. Some name of this plant listed below:
+                    dataset
+1            aalpina_eg_gene
+2         achinensis_eg_gene
+3           acomosus_eg_gene
+4           ahalleri_eg_gene
+5            alyrata_eg_gene
+6       aofficinalis_eg_gene
+7           asot3098_eg_gene
+8             assang_eg_gene
+9          atauschii_eg_gene
+10         athaliana_eg_gene
+11       atrichopoda_eg_gene
+12      aumbellulata_eg_gene
+13       bdistachyon_eg_gene
+
 
 ## 8. Authors
 
