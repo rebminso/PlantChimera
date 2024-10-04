@@ -93,7 +93,7 @@ The configuration of the workflow can be altered by modifying the `config/config
     -h                    Display this help message
 
     Description:
-    PLantChimera: A novel fusion detection  for plants.
+    PLantChimera: A novel fusion detection pipeline for plants.
 
 ```
 
@@ -157,20 +157,19 @@ The output will be genrated in the output folder
 
 ## 7. How to run get_paralogues.R Rscript:
 to get the paralogue genes of ensembl plants then just replace the athaliana_eg_gene to your intersest plant dataste name from the ensembl plant dataset. Some name of this plant listed below:
-                    dataset
-1            aalpina_eg_gene
-2         achinensis_eg_gene
-3           acomosus_eg_gene
-4           ahalleri_eg_gene
-5            alyrata_eg_gene
-6       aofficinalis_eg_gene
-7           asot3098_eg_gene
-8             assang_eg_gene
-9          atauschii_eg_gene
-10         athaliana_eg_gene
-11       atrichopoda_eg_gene
-12      aumbellulata_eg_gene
-13       bdistachyon_eg_gene
+| **S.No** | **ensemble_dataset**|
+|1         |aalpina_eg_gene|
+|2         |acomosus_eg_gene|
+|4         |ahalleri_eg_gene|
+|5         |alyrata_eg_gene|
+|6         |aofficinalis_eg_gene|
+|7         |asot3098_eg_gene|
+|8         |assang_eg_gene|
+|9         |atauschii_eg_gene|
+|10        |athaliana_eg_gene|
+|11        |atrichopoda_eg_gene|
+|12        |aumbellulata_eg_gene|
+|13        |bdistachyon_eg_gene|
 
 
 ## 8. Authors
