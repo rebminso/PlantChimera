@@ -10,9 +10,6 @@ gtf_file <- args[1]
 fasta_file <- args[2]
 output_file <- args[3]
 
-# Set working directory (optional, if needed)
-# setwd("/home/garima/Downloads/fusion/FUSION_TOOL/outputs/FuSeq/ArabidopsisThaliana")
-
 # Read GTF file
 gtf_data <- read.csv(gtf_file, sep = '\t')
 head(gtf_data)
