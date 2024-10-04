@@ -155,24 +155,23 @@ sudo docker run -it -v $PWD:/data nmrtsahu/plantchimera:latest /bin/bash
 The output will be genrated in the output folder 
 
 
-## 7. How to run get_paralogues.R Rscript:
-to get the paralogue genes of ensembl plants then just replace the athaliana_eg_gene to your intersest plant dataste name from the ensembl plant dataset. Some name of this plant listed below:
+## 7. How to run get_paralogues.R Rscript to get paralogue gene:
 
-| **S.No** | **ensemble_dataset**|
-|1         |aalpina_eg_gene|
-|2         |acomosus_eg_gene|
-|4         |ahalleri_eg_gene|
-|5         |alyrata_eg_gene|
-|6         |aofficinalis_eg_gene|
-|7         |asot3098_eg_gene|
-|8         |assang_eg_gene|
-|9         |atauschii_eg_gene|
-|10        |athaliana_eg_gene|
-|11        |atrichopoda_eg_gene|
-|12        |aumbellulata_eg_gene|
-|13        |bdistachyon_eg_gene|
+To retrieve paralogue genes of Ensembl plants, you can find the dataset names in the provided `ensembl_plants_dataset_names.txt` file. 
 
-#
+### Instructions
+1. Open the `ensembl_plants_dataset_names.txt` file to identify the appropriate Ensembl dataset name for your plant of interest.
+2. Replace `athaliana_eg_gene` in your script with the selected dataset name.
+3. Save your changes and run the script to retrieve the paralogue genes.
+
+Following these steps will enable you to access paralogue genes for various plant species using Ensembl datasets.
+
+1. **Run the get_paralogue.R Script**:
+   Use the following bash command to run the `removeParaologue.R` script:
+
+   ```bash
+   Rscript get_paraologue.R genome_annotation.gtf transcriptome.fasta paralogue_gene.txt
+   ```
 
 ## 8. Authors
 
