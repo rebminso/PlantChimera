@@ -157,7 +157,7 @@ The output will be genrated in the output folder
 
 ## 7. How to run get_paralogues.R Rscript to get paralogue gene:
 
-To retrieve paralogue genes of Ensembl plants, you can find the dataset names in the provided `ensembl_plants_dataset_names.txt` file. 
+To retrieve paralogue genes of Ensembl plants, you can find the dataset names in the provided `ensembl_plants_dataset.txt` file. 
 
 ### Instructions
 1. Open the `ensembl_plants_dataset.txt` file to identify the appropriate Ensembl dataset name for your plant of interest.
