@@ -157,6 +157,7 @@ The output will be genrated in the output folder
 
 ## 7. How to run get_paralogues.R Rscript:
 to get the paralogue genes of ensembl plants then just replace the athaliana_eg_gene to your intersest plant dataste name from the ensembl plant dataset. Some name of this plant listed below:
+
 | **S.No** | **ensemble_dataset**|
 |1         |aalpina_eg_gene|
 |2         |acomosus_eg_gene|
@@ -171,6 +172,7 @@ to get the paralogue genes of ensembl plants then just replace the athaliana_eg_
 |12        |aumbellulata_eg_gene|
 |13        |bdistachyon_eg_gene|
 
+#
 
 ## 8. Authors
 
