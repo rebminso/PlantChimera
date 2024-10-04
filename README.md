@@ -160,14 +160,14 @@ The output will be genrated in the output folder
 To retrieve paralogue genes of Ensembl plants, you can find the dataset names in the provided `ensembl_plants_dataset_names.txt` file. 
 
 ### Instructions
-1. Open the `ensembl_plants_dataset_names.txt` file to identify the appropriate Ensembl dataset name for your plant of interest.
-2. Replace `athaliana_eg_gene` in your script with the selected dataset name.
+1. Open the `ensembl_plants_dataset.txt` file to identify the appropriate Ensembl dataset name for your plant of interest.
+2. Replace `athaliana_eg_gene` in `get_paraologue.R` script with the selected dataset name.
 3. Save your changes and run the script to retrieve the paralogue genes.
 
 Following these steps will enable you to access paralogue genes for various plant species using Ensembl datasets.
 
 1. **Run the get_paralogue.R Script**:
-   Use the following bash command to run the `removeParaologue.R` script:
+   Use the following bash command to run the `get_paraologue.R` script:
 
    ```bash
    Rscript get_paraologue.R genome_annotation.gtf transcriptome.fasta paralogue_gene.txt
