@@ -8,8 +8,6 @@ import argparse
 import pandas as pd
 import numpy as np
 from Bio import SeqIO
-#from Bio.Blast.Applications import NcbiblastnCommandline
-#from Bio.Blast import NCBIXML
 import warnings
 warnings.filterwarnings("ignore", category=pd.errors.SettingWithCopyWarning)
 import resource
