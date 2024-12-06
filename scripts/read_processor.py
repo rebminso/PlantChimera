@@ -17,10 +17,10 @@ import time
 start_time = time.time()
 
 parser = argparse.ArgumentParser(description='blast output analysis')
-parser.add_argument( 'df_blast')
-parser.add_argument('df_SAfile')
-parser.add_argument('fusion_df')
-parser.add_argument('df_blast_output')
+parser.add_argument( 'df_blast') # SAfile_blast.txt
+parser.add_argument('df_SAfile') # newSAfile.txt
+parser.add_argument('fusion_df') # fusion_df used for span read counts
+parser.add_argument('df_blast_output') 
 args= parser.parse_args()
 
 
@@ -94,7 +94,6 @@ del ab
 #                                                 'identity': lambda x: list(map(str, x))}).reset_index()
 # df_blast[['SA_row_num', 'row_id']] = df_blast['SA_row_num'].str.split('_', expand=True)
 
-df_blast.to_csv("cicer_df_blast.csv",sep='\t')
 df_blast['row_id'] = pd.to_numeric(df_blast['row_id'])
 df_blast.sort_values(['row_id'], inplace=True)
 df_blast[["query_ID","SA_row_num", "row_id", "Transcript_ID"]]
@@ -175,7 +174,9 @@ shifted_df_spanning = df_spanning.apply(shift_left_and_fill_nan, axis=1)
 trim_shifted_df_spanning=shifted_df_spanning.loc[shifted_df_spanning[1]!=shifted_df_spanning[8]]
 ab4 = shifted_df_spanning.loc[(shifted_df_spanning[7]=='1')& (shifted_df_spanning[14]=='2')]
 ab5 = ab4.loc[ab4[1]!=ab4[8]]
-gk_span = ab5[[1,2,3,4,5,6,8,9,10,11,12,13]]
+gk_span = ab5[[0,1,2,3,4,5,6,8,9,10,11,12,13]]
+#gk_span.to_csv("gk_span.csv")
+#ab5.to_csv("ab5.csv")
 # Function to split and sort dash-separated values
 def split_and_sort(range_str):
     start, end = map(int, range_str.split('-'))
@@ -183,8 +184,8 @@ def split_and_sort(range_str):
 # Split and sort the columns
 gk_span[['Start1', 'End1']] = gk_span[3].apply(lambda x: pd.Series(split_and_sort(x)))
 gk_span[['Start2', 'End2']] = gk_span[10].apply(lambda x: pd.Series(split_and_sort(x)))
-gk_span.rename(columns={1:"Transcript_ID_T1", 8:"Transcript_ID_T2"},inplace=True)
-gk_span_save = gk_span[['Transcript_ID_T1','Start1','End1','Transcript_ID_T2', 'Start2', 'End2']]
+gk_span.rename(columns={0:'query_ID',1:"Transcript_ID_T1", 8:"Transcript_ID_T2"},inplace=True)
+gk_span_save = gk_span[['query_ID','Transcript_ID_T1','Start1','End1','Transcript_ID_T2', 'Start2', 'End2']]
 # gk_span_save = gk_span_save.to_csv('fusion_df.csv',sep='\t',index=False)
 gk_span_save = gk_span_save.to_csv(args.fusion_df,sep='\t',index=False)
 

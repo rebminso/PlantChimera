@@ -721,7 +721,7 @@ df_with_splitcount = df_with_splitcount.rename(columns={'count': 'Split_support_
 # THIS NEDS TO BE CORRECTED BECAUSE SO THAT IT WILL TAKE VALUES TAKEN AFTER CONSIDERING OVERLAPS AND GAPS======================lOOKOUT!!!!!                    # DONE
 # sp1 =  nft1[[ 'chr_x', 'Transcript_ID_T1', 'gene_name_x', 'chr_y', 'Transcript_ID_T2', 'gene_name_y']].value_counts().reset_index()
 df_with_splitcount = df_with_splitcount.rename(columns={'count': 'Split_support_fbpt'})
-df_with_splitcount.to_csv("df_with_splitcount.csv",sep='\t')
+#df_with_splitcount.to_csv("df_with_splitcount.csv",sep='\t')
 
 # READ spanning_fsuion_df.csv
 fusion_df = pd.read_csv(args.allsplit_fusiondf,delimiter='\t')
@@ -750,20 +750,24 @@ numeric_columns = ['start_T1', 'end_T1', 'start_T2', 'end_T2']
 df5[numeric_columns] = df5[numeric_columns].apply(pd.to_numeric, errors='coerce')
 
 
+#df5.to_csv("s272_df5.csv",sep='\t')
+#print(df5)
+
 print("Extracting Transcript's Genomic corodinates for spanning reads...")
 # tion to change transcriptomic ordinates to genomic coordinates
 df1 = adjust_transcript_position_with_profiling(df4, df5)
 
+
 print("Extraction of Transcript's Genomic corodinates is completed!\n")
-#df1.to_csv("df6_adjusted_position.csv")
 
 
-table1= df_with_splitcount
-df1.to_csv("df1.csv",sep='\t')
-table1.to_csv("table1.csv",sep='\t')
+table1 = df_with_splitcount
+#df1.to_csv("s272_df1.csv",sep='\t')
+#table1.to_csv("s272_table1.csv",sep='\t')
 #this step need modification to get the span read counts
 # Initialize new columns in table1 to hold the counts
 
+    # Process tables
 if df1.empty:
     print("No chimera detected for this sample.")
 else:
@@ -781,40 +785,96 @@ else:
         strand_x = row['strand_x']
         strand_y = row['strand_y']
 
-        # Initialize condition1 and condition2
-        condition1 = False
-        condition2 = False
+        # Define condition1
+        condition1 = (
+            ((df1['Transcript_ID_T1'] == row['Transcript_ID_T1']) & 
+            (df1['strand_x'] == row['strand_x']) &  # Match strand_x for Transcript_ID_T1
+            (df1['Transcript_ID_T2'] == row['Transcript_ID_T2']) & 
+            (df1['strand_y'] == row['strand_y'])) &  # Match strand_y for Transcript_ID_T2
+            (
+                (strand_x == '-' and strand_y == '-' and
+                (df1['new_start_T1'] >= row['new_bpT1']) & 
+                (df1['new_end_T1'] >= row['new_bpT1']) &
+                (df1['new_start_T2'] <= row['new_bpT2']) & 
+                (df1['new_end_T2'] <= row['new_bpT2'])) |
+                
+                (strand_x == '-' and strand_y == '+' and
+                (df1['new_start_T1'] >= row['new_bpT1']) & 
+                (df1['new_end_T1'] >= row['new_bpT1']) &
+                (df1['new_start_T2'] >= row['new_bpT2']) & 
+                (df1['new_end_T2'] >= row['new_bpT2'])) |
 
-        # Define condition1 based on strand orientation
-        if ((df1['Transcript_ID_T1'] == row['Transcript_ID_T1']).any() & 
-            (df1['Transcript_ID_T2'] == row['Transcript_ID_T2']).any()):
-            if strand_x == '+' and strand_y == '+':
-                condition1 = (df1['new_start_T1'] <= row['new_bpT1']) & (df1['new_end_T2'] >= row['new_bpT2'])
-            elif strand_x == '-' and strand_y == '-':
-                condition1 = (df1['new_start_T1'] >= row['new_bpT1']) & (df1['new_end_T2'] <= row['new_bpT2'])
-            elif strand_x == '+' and strand_y == '-':
-                condition1 = (df1['new_start_T1'] <= row['new_bpT1']) & (df1['new_end_T2'] <= row['new_bpT2'])
-            elif strand_x == '-' and strand_y == '+':
-                condition1 = (df1['new_start_T1'] >= row['new_bpT1']) & (df1['new_end_T2'] >= row['new_bpT2'])
+                (strand_x == '+' and strand_y == '+' and
+                (df1['new_start_T1'] <= row['new_bpT1']) & 
+                (df1['new_end_T1'] <= row['new_bpT1']) &
+                (df1['new_start_T2'] >= row['new_bpT2']) & 
+                (df1['new_end_T2'] >= row['new_bpT2'])) |
 
-    # Define condition2 based on strand orientation for the reversed transcripts
-        if ((df1['Transcript_ID_T1'] == row['Transcript_ID_T2']).any() & 
-            (df1['Transcript_ID_T2'] == row['Transcript_ID_T1']).any()):
-            if strand_x == '+' and strand_y == '+':
-                condition2 = (df1['new_start_T2'] <= row['new_bpT1']) & (df1['new_end_T1'] >= row['new_bpT2'])
-            elif strand_x == '-' and strand_y == '-':
-                condition2 = (df1['new_start_T2'] >= row['new_bpT1']) & (df1['new_end_T1'] <= row['new_bpT2'])
-            elif strand_x == '+' and strand_y == '-':
-                condition2 = (df1['new_start_T2'] <= row['new_bpT1']) & (df1['new_end_T1'] <= row['new_bpT2'])
-            elif strand_x == '-' and strand_y == '+':
-                condition2 = (df1['new_start_T2'] >= row['new_bpT1']) & (df1['new_end_T1'] >= row['new_bpT2'])
+                (strand_x == '+' and strand_y == '-' and
+                (df1['new_start_T1'] <= row['new_bpT1']) & 
+                (df1['new_end_T1'] <= row['new_bpT1']) &
+                (df1['new_start_T2'] <= row['new_bpT2']) & 
+                (df1['new_end_T2'] <= row['new_bpT2']))
+            )
+        )
+
+        # Define condition2
+        condition2 = (
+            ((df1['Transcript_ID_T1'] == row['Transcript_ID_T2']) & 
+            (df1['strand_x'] == row['strand_y']) &  # Match strand_y for Transcript_ID_T1
+            (df1['Transcript_ID_T2'] == row['Transcript_ID_T1']) & 
+            (df1['strand_y'] == row['strand_x'])) &  # Match strand_x for Transcript_ID_T2
+            (
+                (strand_x == '-' and strand_y == '-' and
+                (df1['new_start_T2'] >= row['new_bpT1']) & 
+                (df1['new_end_T2'] >= row['new_bpT1']) &
+                (df1['new_start_T1'] <= row['new_bpT2']) & 
+                (df1['new_end_T1'] <= row['new_bpT2'])) |
+
+                (strand_x == '-' and strand_y == '+' and
+                (df1['new_start_T2'] >= row['new_bpT1']) & 
+                (df1['new_end_T2'] >= row['new_bpT1']) &
+                (df1['new_start_T1'] >= row['new_bpT2']) & 
+                (df1['new_end_T1'] >= row['new_bpT2'])) |
+
+                (strand_x == '+' and strand_y == '+' and
+                (df1['new_start_T2'] <= row['new_bpT1']) & 
+                (df1['new_end_T2'] <= row['new_bpT1']) &
+                (df1['new_start_T1'] >= row['new_bpT2']) & 
+                (df1['new_end_T1'] >= row['new_bpT2'])) |
+
+                (strand_x == '+' and strand_y == '-' and
+                (df1['new_start_T2'] <= row['new_bpT1']) & 
+                (df1['new_end_T2'] <= row['new_bpT1']) &
+                (df1['new_start_T1'] <= row['new_bpT2']) & 
+                (df1['new_end_T1'] <= row['new_bpT2']))
+            )
+        )
+
+        #Extract Query_id values for rows satisfying the conditions
+        satisfied_rows_condition1 = df1[condition1]
+        satisfied_rows_condition2 = df1[condition2]
+
+        # Combine satisfied rows and get unique Query_ids
+        unique_query_ids = pd.concat([satisfied_rows_condition1, satisfied_rows_condition2])['query_ID'].unique()
+
+        # Count the unique Query_ids
+        unique_query_count = len(unique_query_ids)
+
+        # Update span_read_count with the unique Query_id count for the fusion pair in table1
+        table1.at[idx, 'span_read_count_uniq_queryid_count'] = unique_query_count
+
 
         # Sum counts for the main conditions
         count1 += condition1.sum() if isinstance(condition1, pd.Series) else int(condition1)
         count2 += condition2.sum() if isinstance(condition2, pd.Series) else int(condition2)
 
+        #table1.at[idx, 'count1'] = count1
+        #table1.at[idx, 'count2'] = count2
+
         # Update counts in table1
         table1.at[idx, 'span_read_count'] = count1 + count2
+
 
     # Save the updated table
     table1.to_csv(args.ftable, sep='\t', index=False)
@@ -848,23 +908,10 @@ del splitTab
 del splitTab_1
 del splitTab_1_filtered
 del splitTab_1_once
-
 '''
 
 end_time = time.time()
 usage = resource.getrusage(resource.RUSAGE_SELF)
 max_memory = usage.ru_maxrss  # Memory in kilobytes
 print(f"Execution Time: {end_time - start_time} seconds")
-print(f"Max Memory Usage: {max_memory / 1024} MB") 
-
-
-
-
-
-
-
-
-
-
-
-
+print(f"Max Memory Usage: {max_memory / 1024} MB")
