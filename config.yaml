@@ -1,11 +1,6 @@
-
-# If need output with paralogous genes, type yes.
-# Requiremnts: R packages are essential
-# This step be skipped if you wish.  
-with_paralogous_genes: yes
-
+#configurable parameters 
 parameters:
-
+#user mode
   blast:
     wordsize: 30
     perc_identity: 90
@@ -16,7 +11,7 @@ parameters:
     AnchorLength: 15  # user  # read_length
     ReadLength: 150 #user 
     JunctionSeq: 15 #user 
-  #  
+  #developer mode
   fusion_fil_devmode:  # developer mode 
     subject_query: 20 # dev
     gap_subject: 0   #dev 
@@ -29,6 +24,8 @@ parameters:
     Promiscioushits: 2 #dev
     split: 1 
     span: 0 
+    src_count_min: 2
+    src_count_max: 100
 
 
 
