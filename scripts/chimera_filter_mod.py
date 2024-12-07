@@ -23,11 +23,15 @@ parser.add_argument('Sent', help='ShannonEntropy')
 parser.add_argument('DNAseq', help='dnatopLevel')
 parser.add_argument('bptSeq', help='Sequence around the bpt, value of JunctionSeq from config file')
 parser.add_argument('bptDinuc')
-parser.add_argument('count1', help='Top rows for the same transcript pair')
+parser.add_argument('tophits', help='Top rows for the same transcript pair')
 parser.add_argument('promis', help='PROMISCIOUS')
 parser.add_argument('split', help='splitCount')
 parser.add_argument('span', help='spanCount')
 parser.add_argument('output', help='finalFusion')
+parser.add_argument('src_count_min', help='SRC Count minimum cutoff')
+parser.add_argument('src_count_max', help='SRC Count maximum cutoff')
+
+
 args = parser.parse_args()
 
 output_dir = os.path.dirname(args.output)
@@ -310,10 +314,10 @@ dummy_fusion['Sites'] = np.where(dummy_fusion['chr_x'] == dummy_fusion['chr_y'],
 
     # Apply filtering based on the given thresholds
 dummy_fusion = dummy_fusion.loc[~((dummy_fusion['Split_support_fbpt'] <= int(args.split)) & 
-                                      (dummy_fusion['span_read_count'] <= int(args.span)))]
+                                      (dummy_fusion['span_read_count_uniq_queryid_count'] <= int(args.span)))]
     
     # Create a new column 'SRC' by summing 'Split_support_fbpt' and 'span_read_count'
-dummy_fusion['SRC'] = dummy_fusion['Split_support_fbpt'] + dummy_fusion['span_read_count']
+dummy_fusion['SRC'] = dummy_fusion['Split_support_fbpt'] + dummy_fusion['span_read_count_uniq_queryid_count']
     
     # Drop the 'Split_support_fbpt' and 'span_read_count' columns
 #dummy_fusion.drop(['Split_support_fbpt', 'span_read_count'], axis=1, inplace=True)
@@ -332,7 +336,7 @@ dummy_fusion2 = dummy_fusion[['Fusion_Name',"5'Gene ID","5'Breakpoint","5'Transc
 
 df_top3 = (
     dummy_fusion2.groupby(["5'Gene ID", "3'Gene ID"], group_keys=False)  # Ensure group_keys=False to avoid adding a multi-index
-    .apply(lambda x: x.sort_values(by='SRC', ascending=False).head(int(args.count1)))  # Sort by 'SRC' descending and get top N rows
+    .apply(lambda x: x.sort_values(by='SRC', ascending=False).head(int(args.tophits)))  # Sort by 'SRC' descending and get top N rows
     .reset_index(drop=True)  # Reset the index
 )
 
@@ -370,20 +374,23 @@ def custom_filter(group):
     return max_src_rows.iloc[0]
 
 # Apply the custom filter to each group
-final_df = df_filtered.groupby(group_columns, group_keys=False).apply(custom_filter).reset_index(drop=True)
+final_df1 = df_filtered.groupby(group_columns, group_keys=False).apply(custom_filter).reset_index(drop=True)
 
 # Drop the total_entropy column if not needed
-final_df.drop(columns=['total_entropy'], inplace=True)
+final_df1.drop(columns=['total_entropy', 'SplicePattern','Split_support_fbpt','span_read_count', 'span_read_count_uniq_queryid_count'], inplace=True)
 
+
+# Filter rows where src > 2 and src < 100
+final_df2 = final_df1[(final_df1["SRC"] > int(args.src_count_min)) & (final_df1["SRC"] < int(args.src_count_max))]
 
 #:::::::::::::::::::::::::::::::::::::::::::
 
 
-if final_df.empty:
+if final_df2.empty:
     print("No chimera detected for this sample.\n")
 else:
 # df_filtered.to_csv('FinalFuZen254.csv', sep ='\t', index=False)
-    final_df.to_csv(args.output, sep ='\t', index=False)
+    final_df2.to_csv(args.output, sep ='\t', index=False)
 ## OLD
 
 output_dir = Path(output_dir)

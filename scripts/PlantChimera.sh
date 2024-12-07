@@ -106,18 +106,19 @@ max_parallel=$(yq eval '.parameters.blast.max_parallel' "$config_file")
 AnchorLength=$(yq eval '.parameters.fusion_filter.AnchorLength' "$config_file")
 ReadLength=$(yq eval '.parameters.fusion_filter.ReadLength' "$config_file")
 JunctionSeq=$(yq eval '.parameters.fusion_filter.JunctionSeq' "$config_file")
-overlap_query=$(yq eval '.parameters.fusion_fil_devmode.overlap_query' "$config_file")
-gap=$(yq eval '.parameters.fusion_fil_devmode.gap' "$config_file")
-subject_query=$(yq eval '.parameters.fusion_fil_devmode.subject_query' "$config_file")
-gap_subject=$(yq eval '.parameters.fusion_fil_devmode.gap_subject' "$config_file")
-JunctionDist=$(yq eval '.parameters.fusion_fil_devmode.JunctionDist' "$config_file")
-ShanEnt_Seq=$(yq eval '.parameters.fusion_fil_devmode.ShanEnt_Seq' "$config_file")
-BptDinucleotide=$(yq eval '.parameters.fusion_fil_devmode.BptDinucleotide' "$config_file")
-TopHits=$(yq eval '.parameters.fusion_fil_devmode.TopHits' "$config_file")
-Promiscioushits=$(yq eval '.parameters.fusion_fil_devmode.Promiscioushits' "$config_file")
-split=$(yq eval '.parameters.fusion_fil_devmode.split' "$config_file")
-span=$(yq eval '.parameters.fusion_fil_devmode.span' "$config_file")
-
+overlap_query=$(yq eval '.parameters.fusion_filt_devmode.overlap_query' "$config_file")
+gap=$(yq eval '.parameters.fusion_filt_devmode.gap' "$config_file")
+subject_query=$(yq eval '.parameters.fusion_filt_devmode.subject_query' "$config_file")
+gap_subject=$(yq eval '.parameters.fusion_filt_devmode.gap_subject' "$config_file")
+JunctionDist=$(yq eval '.parameters.fusion_filt_devmode.JunctionDist' "$config_file")
+ShanEnt_Seq=$(yq eval '.parameters.fusion_filt_devmode.ShanEnt_Seq' "$config_file")
+BptDinucleotide=$(yq eval '.parameters.fusion_filt_devmode.BptDinucleotide' "$config_file")
+TopHits=$(yq eval '.parameters.fusion_filt_devmode.TopHits' "$config_file")
+Promiscioushits=$(yq eval '.parameters.fusion_filt_devmode.Promiscioushits' "$config_file")
+split=$(yq eval '.parameters.fusion_filt_devmode.split' "$config_file")
+span=$(yq eval '.parameters.fusion_filt_devmode.span' "$config_file")
+src_count_min=$(yq eval '.parameters.fusion_filt_devmode.src_count_min' "$config_file")
+src_count_max=$(yq eval '.parameters.fusion_filt_devmode.src_count_max' "$config_file")
 
 
 
@@ -127,9 +128,6 @@ INDEX_DIR="$OUTPUT/index"
 mkdir -p "$INDEX_DIR"
 # Define the index prefix inside the index directory
 INDEX_PREFIX="$INDEX_DIR/index"
-
-# Extract the base name of the input file
-#$BASE_NAME=$(basename "$INPUT1_FILE" | sed -E 's/(_[12]\.fastq|\.[12]\.fastq)//')
 
 # Check if index files exist
 INDEX_FILES=("${INDEX_PREFIX}.amb" "${INDEX_PREFIX}.ann" "${INDEX_PREFIX}.bwt" "${INDEX_PREFIX}.pac" "${INDEX_PREFIX}.sa")
@@ -314,7 +312,7 @@ if [ ! -f $read_processor_out ]; then
     
     start_time=$(date +%s)
 
-    python3 $SCRIPT_DIR/read_processor.py "$OUTPUT_DIR/${SAMPLE_OUTPUT}_SAfile_blast.txt" "$OUTPUT_DIR/${SAMPLE_OUTPUT}_newSAfile.txt" "$OUTPUT_DIR/${SAMPLE_OUTPUT}_fusiondf.csv" "$OUTPUT_DIR/${SAMPLE_OUTPUT}_df_blast_output.txt"
+    python3 $SCRIPT_DIR/read_processor.py "$OUTPUT_DIR/${SAMPLE_OUTPUT}_SAfile_blast.txt" "$OUTPUT_DIR/${SAMPLE_OUTPUT}_newSAfile.txt" "$OUTPUT_DIR/${SAMPLE_OUTPUT}_fusiondf.csv" "$OUTPUT_DIR/${SAMPLE_OUTPUT}_df_blast_output.txt"  
 
     if [ $? -ne 0 ]; then
         echo "Error running read_processor.py."
@@ -379,7 +377,7 @@ fi
 echo "[ Step 10/10 ] : chimera_filter.py"
 
 start_time=$(date +%s)
-python $SCRIPT_DIR/chimera_filter.py $OUTPUT_DIR/${SAMPLE_OUTPUT}_chimera_identified.csv $JunctionDist $ShanEnt_Seq $REFERENCE_FILE $JunctionSeq $BptDinucleotide $TopHits $Promiscioushits $split $span $OUTPUT_DIR/${SAMPLE_OUTPUT}_PlantChimera_fusions.csv
+python $SCRIPT_DIR/chimera_filter_mod.py $OUTPUT_DIR/${SAMPLE_OUTPUT}_chimera_identified.csv $JunctionDist $ShanEnt_Seq $REFERENCE_FILE $JunctionSeq $BptDinucleotide $TopHits $Promiscioushits $split $span $OUTPUT_DIR/${SAMPLE_OUTPUT}_PlantChimera_fusions.csv $src_count_min $src_count_max
 if [ $? -ne 0 ]; then
     echo "Error running chimera_filter.py."
     exit 1
