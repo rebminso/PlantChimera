@@ -12,7 +12,7 @@ parameters:
     ReadLength: 150 #user 
     JunctionSeq: 15 #user 
   #developer mode
-  fusion_fil_devmode:  # developer mode 
+  fusion_filt_devmode:  # developer mode 
     subject_query: 20 # dev
     gap_subject: 0   #dev 
     overlap_query: 10  #dev # Number of overlaps allowed between a single read mapping to two different transcripts 
