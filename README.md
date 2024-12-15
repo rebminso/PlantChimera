@@ -17,7 +17,6 @@ The repository can be downloaded with the additional dependencies handled by Pla
     cd PlantChimera
 ```
 
-
 ## 2. Installation
 To simplify using the program, a Dockerfile is provided which will create a Docker image suitable for 
 all the required packages. This README covers the use of the Docker version of the tool. 
@@ -45,36 +44,29 @@ This will open a shell in the container, allowing you to view and interact with 
 ```
 OR
 
-### (B1.) If conda and mamba are already installed, snakemake can be installed with the following command:
+### (B1.) Pull the Docker image into a Singularity Image File (SIF)
 
 ```bash
-    conda activate base
-    conda env create -f config/environment.yml
-    conda activate platnchimera
+    singularity pull docker://nmrtsahu/plantchimera:latest
 ```
-
-OR
-
-### (C1.) Manually install the following dependencies to create an environment and load packages through the command line as shown below:
-
+This will download the Docker image and convert it into a Singularity Image File (.sif) in the current directory.
 ```bash
-    conda activate base
-    conda create -n plantchimera python=3.7 --no-default-packages
-    conda activate platnchimera
-    conda install -c bioconda bedtools
-    conda install -c bioconda samtools
-    conda install -c conda-forge biopython
-    conda install conda-forge::tzdata
-    conda install anaconda::numpy 
-    conda install anaconda::pandas 
+singularity exec --bind /path/to/local/directory:/data plantchimera.sif /bin/bash
+./PlantChimera.sh -h
+```
+## 3. Input Data Setup
+a) The input FASTQ files and reference genome are available for download from [here](https://drive.google.com/drive/folders/1Sg8T8NXMD6t7qQO_SjlHSWl4_HRoEl6p?usp=drive_link ). 
+
+b) Once you've downloaded the files, move them to the `PlantChimera/sample` directory. You can do this manually or using the following command:
+```bash 
+mv /path/to/downloaded/files/*.fastq.gz /path/to/PlantChimera/sample/
 ```
 
-
-## 3. Configure workflow
+## 4. Configure workflow
 The configuration of the workflow can be altered by modifying the `config/config.yaml`. The imporant directories are `Input`, `Scripts` and `Output`.  
 
 
-## 4. Run PlantChimera
+## 5. Run PlantChimera
 
 
 ```bash
@@ -97,7 +89,7 @@ The configuration of the workflow can be altered by modifying the `config/config
 
 ```
 
-## 5. Output
+## 6. Output
 
 The output of PlantChimera named `PlantChimera_fusions.csv` is a tab delimited file with the following format. Ther are several other intermediatory files generated during the process which might be useful for user.
 
@@ -134,7 +126,7 @@ Description of each column is provided below:
 
 #
 
-## 6. Pratical examples of using PlantChimera
+## 7. Pratical examples of using PlantChimera
 
 A small input dataset has been provided in `input/sample/` that can be leveraged using modest computational resources, so it should run on any hardware with atlast 4GB ram. 
 
@@ -155,7 +147,7 @@ sudo docker run -it -v $PWD:/data nmrtsahu/plantchimera:latest /bin/bash
 The output will be genrated in the output folder 
 
 
-## 7. How to run get_paralogues.R Rscript to get paralogue gene:
+## 8. How to run get_paralogues.R Rscript to get paralogue gene:
 
 To retrieve paralogue genes of Ensembl plants, you can find the dataset names in the provided `ensembl_plants_dataset.txt` file. 
 
@@ -173,7 +165,7 @@ Following these steps will enable you to access paralogue genes for various plan
    Rscript get_paraologue.R genome_annotation.gtf transcriptome.fasta paralogue_gene.txt
    ```
 
-## 8. Authors
+## 9. Authors
 
 - [Garima Kalakoti](mailto:kalakoti09@gmail.com)
 - [Namrata Sahu](mailto.sahunamrata2098@gmail.com)
