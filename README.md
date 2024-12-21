@@ -36,11 +36,11 @@ all the required packages. This README covers the use of the Docker version of t
 This will open a shell in the container, allowing you to view and interact with the files (e.g., scripts and the config.yaml file and the output) in the mounted directory on your local machine. Users can modify the parameters in the config.yaml file as needed to suit their requirements. Run the PlantChimera.sh  in a shell in the container. To exit the shell without stopping the container, press Ctrl + P followed by Ctrl + Q.
 
 ```bash
-    ./PlantChimera.sh -h 
+    PlantChimera.sh -h 
 ```
 #### b) Or running without interacting the shell in the container  
 ```bash
-    docker run -it -v /path/to/local/directory:/app/PlantChimera/data nmrtsahu/plantchimera:latest “./PlantChimera.sh -h” 
+    docker run -it -v /path/to/local/directory:/app/PlantChimera/data nmrtsahu/plantchimera:latest “ PlantChimera.sh -h” 
 ```
 OR
 
