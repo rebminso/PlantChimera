@@ -72,13 +72,18 @@ RUN R -e "if (!requireNamespace('BiocManager', quietly = TRUE)) install.packages
 RUN mkdir -p /app/Plantchimera/data /app/PlantChimera
 
 # Set the working directory
-WORKDIR /app/PlantChimera
+WORKDIR /app/PlantChimera/data
 
 # Copy the entire PlantChimera folder into the container
 COPY PlantChimera /app/PlantChimera
 
 # Make all scripts in the PlantChimera folder executable
 RUN chmod -R +x /app/PlantChimera
+# Copy the script into a directory in the PATH
+RUN ln -s /app/PlantChimera/PlantChimera.sh /usr/local/bin/PlantChimera.sh
+
+# Make the script executable
+RUN chmod +x /usr/local/bin/PlantChimera.sh
 
 # Set default command
 CMD ["bash"]
