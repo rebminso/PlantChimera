@@ -384,15 +384,15 @@ if [ $? -ne 0 ]; then
 fi
 
 #remove intermediate files 
-#rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_fusiondf.csv
-#rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_chimera_identified.csv
-#rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_df_blast_output.txt
-#rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_allsplit.txt
-#rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_SAfile_blast.txt
-#rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_newSAfile.txt
-#rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_SAfile.txt
-#rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_PE.bedpe
-#rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}.sam
+rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_fusiondf.csv
+rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_chimera_identified.csv
+rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_df_blast_output.txt
+rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_allsplit.txt
+rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_SAfile_blast.txt
+rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_newSAfile.txt
+rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_SAfile.txt
+rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_PE.bedpe
+rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}.sam
 #rm -r $OUTPUT_DIR/*.fasta $OUTPUT_DIR/*.bed 
 
 echo "chimera_filter.py took $((end_time - start_time)) seconds."
