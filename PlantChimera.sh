@@ -360,7 +360,7 @@ chimera_iden=$OUTPUT_DIR/${SAMPLE_OUTPUT}_chimera_identified.csv
 if [ ! -f $chimera_iden ]; then 
 
     start_time=$(date +%s)  
-    python $SCRIPT_DIR/chimera_iden_modified.py $ANNOT_FILE $OUTPUT/transcript_info.csv $OUTPUT/exons_position_adjusted.csv $OUTPUT_DIR/${SAMPLE_OUTPUT}_allsplit.txt $OUTPUT_DIR/${SAMPLE_OUTPUT}_chimera_identified.csv $OUTPUT_DIR/${SAMPLE_OUTPUT}_fusiondf.csv
+    python $SCRIPT_DIR/chimera_identifier.py $ANNOT_FILE $OUTPUT/transcript_info.csv $OUTPUT/exons_position_adjusted.csv $OUTPUT_DIR/${SAMPLE_OUTPUT}_allsplit.txt $OUTPUT_DIR/${SAMPLE_OUTPUT}_chimera_identified.csv $OUTPUT_DIR/${SAMPLE_OUTPUT}_fusiondf.csv
     if [ $? -ne 0 ]; then
         echo "Error running chimera_identifier.py."
         exit 1nan
@@ -377,21 +377,21 @@ fi
 echo "[ Step 10/10 ] : chimera_filter.py"
 
 start_time=$(date +%s)
-python $SCRIPT_DIR/chimera_filter_mod.py $OUTPUT_DIR/${SAMPLE_OUTPUT}_chimera_identified.csv $JunctionDist $ShanEnt_Seq $REFERENCE_FILE $JunctionSeq $BptDinucleotide $TopHits $Promiscioushits $split $span $OUTPUT_DIR/${SAMPLE_OUTPUT}_PlantChimera_fusions.csv $src_count_min $src_count_max
+python $SCRIPT_DIR/chimera_filter.py $OUTPUT_DIR/${SAMPLE_OUTPUT}_chimera_identified.csv $JunctionDist $ShanEnt_Seq $REFERENCE_FILE $JunctionSeq $BptDinucleotide $TopHits $Promiscioushits $split $span $OUTPUT_DIR/${SAMPLE_OUTPUT}_PlantChimera_fusions.csv $src_count_min $src_count_max
 if [ $? -ne 0 ]; then
     echo "Error running chimera_filter.py."
     exit 1
 fi
 
 #remove intermediate files 
-rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_fusiondf.csv
-rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_chimera_identified.csv
-rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_df_blast_output.txt
-rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_allsplit.txt
-rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_SAfile_blast.txt
-rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_newSAfile.txt
-rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_SAfile.txt
-rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_PE.bedpe
+#rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_fusiondf.csv
+#rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_chimera_identified.csv
+#rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_df_blast_output.txt
+#rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_allsplit.txt
+#rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_SAfile_blast.txt
+#rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_newSAfile.txt
+#rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_SAfile.txt
+#rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_PE.bedpe
 #rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}.sam
 #rm -r $OUTPUT_DIR/*.fasta $OUTPUT_DIR/*.bed 
 
