@@ -118,11 +118,6 @@ dummy_fusion['RightBreakEntropy'] = np.round(right_entropies, 2)
 dummy_fusion.drop(['end2', 'start2', 'end1', 'start1'], axis=1, inplace=True)
 #dummy_fusion.to_csv(args.output, sep='\t', index=False)
 
-#print(dummy_fusion)
-print("Entropy calculation is completed.")
-
-print("Script completed in", time.time() - start_time, "seconds.")
-
 
 ## SPLICE PATTERN  
 import pandas as pd
@@ -351,15 +346,17 @@ to_discard = count_df[count_df["3'Gene ID"] > int(args.promis)]["5'Gene ID"]
 # Remove the rows from the original DataFrame where col1 has more than 3 unique col2 values
 df_filtered = df_top3[~df_top3["5'Gene ID"].isin(to_discard)]
 
-df_filtered.drop_duplicates(inplace = True)
 
 #df_filtered.to_csv('s272_final_chimera_out.csv', sep ='\t', index=False)
 #:::::::::::::::::::::::::::::::::::::::::::
 #further filtering to get the unique chimera based on entropy and SRC count 
 
+# Remove duplicates
+df_filtered = df_filtered.drop_duplicates()
 
-# Calculate total entropy
-df_filtered['total_entropy'] = df_filtered['LeftBreakEntropy'] + df_filtered['RightBreakEntropy']
+# Calculate total_entropy
+df_filtered.loc[:, 'total_entropy'] = df_filtered['LeftBreakEntropy'] + df_filtered['RightBreakEntropy']
+
 
 # Group by specified columns
 #group_columns = ['Fusion_Name', "5'Gene ID", "5'Transcript_ID", "3'Gene ID", "3'Transcript_ID"]
@@ -376,8 +373,13 @@ def custom_filter(group):
 # Apply the custom filter to each group
 final_df1 = df_filtered.groupby(group_columns, group_keys=False).apply(custom_filter).reset_index(drop=True)
 
-# Drop the total_entropy column if not needed
-final_df1.drop(columns=['total_entropy', 'SplicePattern','Split_support_fbpt','span_read_count', 'span_read_count_uniq_queryid_count'], inplace=True)
+# Update both columns
+final_df1[['t1_region', 't2_region']] = final_df1[['t1_region', 't2_region']].replace({'exon_mid': 'M', 'exon_ter': 'E'})
+final_df1['Breakpoint Pattern'] = final_df1['t1_region'] + '/' + final_df1['t2_region']
+
+
+# Drop the columns if not needed
+final_df1.drop(columns=['total_entropy', 'SplicePattern','Split_support_fbpt','span_read_count', 'span_read_count_uniq_queryid_count','t1_region', 't2_region'], inplace=True)
 
 
 # Filter rows where src > 2 and src < 100
