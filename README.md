@@ -14,12 +14,6 @@ PlantChimera/
     │   ├── ensembl_plants_dataset.txt
     │   ├── get_paralogue.R
     │   └── ath_paralogue_gene.txt
-    ├── sample
-    │   ├── Arabidopsis_thaliana.TAIR10.56.gtf.gz
-    │   ├── Arabidopsis_thaliana.TAIR10.cdna.all.fa.gz
-    │   ├── Arabidopsis_thaliana.TAIR10.dna.toplevel.fa.gz
-    │   ├── sample_1.fastq.gz
-    │   └── sample_2.fastq.gz
     └── scripts
         ├── blastn_parallel_optimized.py
         ├── chimera_breakpoint_detecter.py
