@@ -6,18 +6,18 @@ PlantChimera aims to provide a streamlined, efficient, and accurate method for i
 # Depth indented listing of files
 ``` bash
 PlantChimera/
-    ├── ath_paralogue_gene.txt
     ├── config.yaml
     ├── Dockerfile
     ├── PlantChimera.sh
     ├── README.md
-    ├── paralogue
+    ├── Paralogues
     │   ├── ensembl_plants_dataset.txt
     │   ├── get_paralogue.R
+    │   └── ath_paralogue_gene.txt
     ├── sample
     │   ├── Arabidopsis_thaliana.TAIR10.56.gtf.gz
     │   ├── Arabidopsis_thaliana.TAIR10.cdna.all.fa.gz
-    │   ├── Arabidopsis_thaliana.TAIR10.dna.all.fa.gz
+    │   ├── Arabidopsis_thaliana.TAIR10.dna.toplevel.fa.gz
     │   ├── sample_1.fastq.gz
     │   └── sample_2.fastq.gz
     └── scripts
@@ -167,20 +167,20 @@ sudo docker run -it -v $PWD:/data nmrtsahu/plantchimera:latest /bin/bash
 ```
 ### Run the following command to execute PlantChimera
 ``` bash
-./PlantChimera.sh -r sample/Arabidopsis_thaliana.TAIR10.dna.toplevel.fa -i sample/sample_1.fastq  -I sample/sample_1.fastq -g sample/Arabidopsis_thaliana.TAIR10.56.gtf -T sample/Arabidopsis_thaliana.TAIR10.cdna.all.fa -o output -t 8 -s Ath -p paralogue_gene.txt
+./PlantChimera.sh -r sample/Arabidopsis_thaliana.TAIR10.dna.toplevel.fa -i sample/sample_1.fastq  -I sample/sample_1.fastq -g sample/Arabidopsis_thaliana.TAIR10.56.gtf -T sample/Arabidopsis_thaliana.TAIR10.cdna.all.fa -o output -t 8 -s Ath -p Paralogues/ath_paralogue_gene.txt
 ```
 The results will be generated in the `output/` folder 
 
 
 ## 8. How to run get_paralogues.R Rscript to get paralogue gene:
 
-To retrieve paralogue genes of Ensembl plants, you can find the dataset names in the provided `paralogue/ensembl_plants_dataset.txt` file. 
+To retrieve paralogue genes of Ensembl plants, you can find the dataset names in the provided `Paralogues/ensembl_plants_dataset.txt` file. 
 
 ### Instructions
-1. Download genome and transcriptome of the plant of interest in `paralogue/` directory. 
-2. Open the `paralogue/ensembl_plants_dataset.txt` file to identify the appropriate Ensembl dataset name for your plant of interest.
+1. Download genome and transcriptome of the plant of interest in `Paralogues/` directory. 
+2. Open the `Paralogues/ensembl_plants_dataset.txt` file to identify the appropriate Ensembl dataset name for your plant of interest.
 3. Replace `athaliana_eg_gene` in `get_paraologue.R` script with the selected dataset name. 
-4. Save your changes and run the script to retrieve the paralogue genes.
+4. Save your changes and run the script to retrieve the paralogues genes.
 
 Following these steps will enable you to access paralogue genes for various plant species using Ensembl datasets.
 
