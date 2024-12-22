@@ -223,7 +223,7 @@ if [ -f "$bed_file" ]; then
     echo ""
 else
     echo "BAM file to BED conversion is running..."
-    bamToBed -bedpe -i "$OUTPUT_DIR/${SAMPLE_OUTPUT}_sorted.bam" > "$OUTPUT_DIR/${SAMPLE_OUTPUT}_PE.bedpe"
+    bamToBed -bedpe -i "$OUTPUT_DIR/${SAMPLE_OUTPUT}_sorted.bam" 2>/dev/null > "$OUTPUT_DIR/${SAMPLE_OUTPUT}_PE.bedpe"
     echo "BAM file to BED conversion is completed."
     end_time=$(date +%s)
     echo "BAM to BED conversion took $((end_time - start_time)) seconds."
