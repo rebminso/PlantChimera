@@ -1,27 +1,36 @@
-#configurable parameters 
+# Configuration Parameters
 parameters:
-#user mode
+  # BLAST settings (User-configurable)
   blast:
+    # Word size for BLAST alignment. Higher values speed up alignment but may reduce sensitivity.
     wordsize: 30
+    # Minimum percentage identity for a BLAST match to be considered valid.
     perc_identity: 90
-    num_threads: 2 # number of threads to run the blast
-    max_parallel: 10 # number jobs to run the blast  parallel
+    # Number of threads to use for running BLAST
+    num_threads: 2 
+    # Maximum number of parallel BLAST jobs to run.
+    max_parallel: 10 
   
-  fusion_filter:    
-    AnchorLength: 15  # user  # read_length
-    ReadLength: 150 #user 
-    JunctionSeq: 15 #user 
-  #developer mode
-  fusion_filt_devmode:  # developer mode 
-    subject_query: 20 # dev
-    gap_subject: 0   #dev 
-    overlap_query: 10  #dev # Number of overlaps allowed between a single read mapping to two different transcripts 
-    gap: 5 #dev
-    JunctionDist: 100 #dev
-    ShanEnt_Seq: 50 #dev
-    BptDinucleotide: 2  #dev
-    TopHits: 3 #dev
-    Promiscioushits: 2 #dev
+  fusion_filter: 
+    # Minimum anchor length for fusion pair
+    AnchorLength: 15 
+    # Length of the sequencing reads.
+    ReadLength: 150 
+    # Length of the Junction seqeunce
+    JunctionSeq: 15 
+  
+  
+# Fusion Filter Developer Settings (Advanced configuration for developers)
+  fusion_filt_devmode:  
+    subject_query: 20 
+    gap_subject: 0   
+    overlap_query: 10  
+    gap: 5 
+    JunctionDist: 100 
+    ShanEnt_Seq: 50 
+    BptDinucleotide: 2 
+    TopHits: 3 
+    Promiscioushits: 2 
     split: 1 
     span: 0 
     src_count_min: 2
