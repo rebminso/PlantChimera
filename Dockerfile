@@ -36,6 +36,7 @@ RUN pip install --upgrade pip \
     tqdm==4.66.5 \
     biopython==1.84 \
     memory-profiler==0.61.0 \
+    termcolor \
     joblib==1.3.2
 
 # Install bwa
