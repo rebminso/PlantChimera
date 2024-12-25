@@ -16,13 +16,13 @@ usage() {
     echo ""
     echo "Options:"
     echo "  -r <reference_file>   Path to the reference genome file (.fasta or .fa) (required)"
-    echo "  -i <input_file>       Path to the forward read of paired end sequencing data (required)"
-    echo "  -I <input_file>       Path to the reve rse read of paired end sequencing data (required)"
-    echo "  -g <gtf_file>         Path to the genome annotation file (.gtf)(required)"
-    echo "  -T <transcriptome_file> Path to the reference transcriptome file (.fasta or .fa)(required)"
-    echo "  -o <SAMPLE_OUTPUT>    Path to the output folder (required), Note: only enter the name of the sample eg SRR16989272 "
+    echo "  -i <input_file>       Path to the forward read of paired-end sequencing data (required)"
+    echo "  -I <input_file>       Path to the reverse read of paired-end sequencing data (required)"
+    echo "  -g <gtf_file>         Path to the genome annotation file (.gtf) (required)"
+    echo "  -T <transcriptome_file> Path to the reference transcriptome file (.fasta or .fa) (required)"
+    echo "  -o <SAMPLE_OUTPUT>    Path to the output folder (required). Note: only enter the name of the sample, e.g., SRR16989272"
     echo "  -t <threads>          Number of threads to use (default: 4)"
-    echo "  -s <species>          Species specific output folder (required), Note: folder name should be without space eg. arabidopsis_thaliana or ath"
+    echo "  -s <species>          Species-specific output folder (required). Note: folder name should be without spaces, e.g., arabidopsis_thaliana or ath"
     echo "  -p <paralogue_gene>   Path to the paralogue gene file"
     echo "  -h                    Display this help message"
     echo ""
@@ -31,6 +31,7 @@ usage() {
     echo ""
     exit 1
 }
+
 
 while getopts ":r:i:I:g:T:o:t:s:p:h" opt; do
     case ${opt} in
@@ -140,7 +141,7 @@ for file in "${INDEX_FILES[@]}"; do
     fi
 done
 echo ""
-echo "[ Step 1/10 ] : Indexing"
+echo -e "\e[32m[ Step 1/10 ] : Indexing\e[0m"
 start_time=$(date +%s)
 if [ "$INDEX_EXISTS" = true ]; then
     echo "Index files already exist. Skipping indexing."
@@ -158,7 +159,7 @@ echo "Indexing took $((end_time - start_time)) seconds."
 echo ""
 
 #-----STEP 2 - ALIGNMENT AND PROCESSING-----
-echo "[ Step  2/10 ] : Alignment and processing"
+echo -e "\e[32m[ Step  2/10 ] : Alignment and processing\e[0m"
 
 bam_file="$OUTPUT_DIR/${SAMPLE_OUTPUT}_sorted.bam"
 
@@ -213,7 +214,7 @@ else
 fi
 
 #-----STEP 3 - BAM TO BED CONVERSION-----
-echo "[ Step 3/10 ] : BAM to BED Conversion"
+echo -e "\e[32m[ Step 3/10 ] : BAM to BED Conversion\e[0m"
 
 start_time=$(date +%s)
 bed_file="$OUTPUT_DIR/${SAMPLE_OUTPUT}_PE.bedpe"
@@ -223,7 +224,7 @@ if [ -f "$bed_file" ]; then
     echo ""
 else
     echo "BAM file to BED conversion is running..."
-    bamToBed -bedpe -i "$OUTPUT_DIR/${SAMPLE_OUTPUT}_sorted.bam" 2>/dev/null > "$OUTPUT_DIR/${SAMPLE_OUTPUT}_PE.bedpe"
+    bamToBed -bedpe -i "$OUTPUT_DIR/${SAMPLE_OUTPUT}_sorted.bam" > "$OUTPUT_DIR/${SAMPLE_OUTPUT}_PE.bedpe"
     echo "BAM file to BED conversion is completed."
     end_time=$(date +%s)
     echo "BAM to BED conversion took $((end_time - start_time)) seconds."
@@ -235,7 +236,7 @@ else
 fi
 
 #-----STEP 4 - SA_FILE generation step-----
-echo "[ Step 4/10 ] : Extracting discordant reads "
+echo -e "\e[32m[ Step 4/10 ] : Extracting discordant reads \e[0m"
 # Timing the python3 script discordant_extracter.py
 sa_file="$OUTPUT_DIR/${SAMPLE_OUTPUT}_SAfile.txt"
 
@@ -257,7 +258,7 @@ else
 fi
 
 #----- STEP 5 - removal of paralogues gene fusion pair -----
-echo "[ Step 5/10 ] : removal of paralogues gene fusion pair"
+echo -e "\e[32m[ Step 5/10 ] : removal of paralogues gene fusion pair\e[0m"
 start_time=$(date +%s)
 paralogue_remover_out="$OUTPUT_DIR/${SAMPLE_OUTPUT}_newSAfile.txt"
 
@@ -280,7 +281,7 @@ fi
 
 #----- STEP 6 - Blastn running -----
 mkdir -p "$OUTPUT_DIR/temp"
-echo "[ Step 6/10 ] : Blastn running ..."
+echo -e "\e[32m[ Step 6/10 ] : Blastn running ...\e[0m"
 
 blast_out="$OUTPUT_DIR/${SAMPLE_OUTPUT}_SAfile_blast.txt"
 start_time=$(date +%s) 
@@ -304,7 +305,7 @@ else
 fi
 
 #----- STEP 7 - read_processor.py.py -----
-echo "[ Step 7/10 ] : Running read_processor.py"
+echo -e "\e[32m[ Step 7/10 ] : Running read_processor.py\e[0m"
 
 read_processor_out="$OUTPUT_DIR/${SAMPLE_OUTPUT}_df_blast_output.txt"
 
@@ -332,7 +333,7 @@ fi
 start_time=$(date +%s)
 
 bp_detector_out=$OUTPUT_DIR/${SAMPLE_OUTPUT}_allsplit.txt
-echo "[ Step 8/10 ] : chimera_breakpoint_detecter.py"
+echo -e "\e[32m[ Step 8/10 ] : chimera_breakpoint_detecter.py\e[0m"
 
 if [ ! -f $bp_detector_out ]; then
 
@@ -353,7 +354,7 @@ else
 fi
 
 #--------STEP 9 : chimera_iden_modified.py----------
-echo "[ Step 9/10 ] : chimera_identifier.py"
+echo -e "\e[32m[ Step 9/10 ] : chimera_identifier.py\e[0m"
 
 chimera_iden=$OUTPUT_DIR/${SAMPLE_OUTPUT}_chimera_identified.csv
 
@@ -374,7 +375,7 @@ else
 fi
 
 #--------STEP 10 : chimera_filter.py----------
-echo "[ Step 10/10 ] : chimera_filter.py"
+echo -e "\e[32m[ Step 10/10 ] : chimera_filter.py\e[0m"
 
 start_time=$(date +%s)
 python $SCRIPT_DIR/chimera_filter.py $OUTPUT_DIR/${SAMPLE_OUTPUT}_chimera_identified.csv $JunctionDist $ShanEnt_Seq $REFERENCE_FILE $JunctionSeq $BptDinucleotide $TopHits $Promiscioushits $split $span $OUTPUT_DIR/${SAMPLE_OUTPUT}_PlantChimera_fusions.csv $src_count_min $src_count_max
@@ -384,15 +385,15 @@ if [ $? -ne 0 ]; then
 fi
 
 #remove intermediate files 
-rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_fusiondf.csv
-rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_chimera_identified.csv
-rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_df_blast_output.txt
-rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_allsplit.txt
-rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_SAfile_blast.txt
-rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_newSAfile.txt
-rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_SAfile.txt
-rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_PE.bedpe
-rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}.sam
+#rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_fusiondf.csv
+#rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_chimera_identified.csv
+#rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_df_blast_output.txt
+#rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_allsplit.txt
+#rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_SAfile_blast.txt
+#rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_newSAfile.txt
+#rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_SAfile.txt
+#rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}_PE.bedpe
+#rm -r $OUTPUT_DIR/${SAMPLE_OUTPUT}.sam
 #rm -r $OUTPUT_DIR/*.fasta $OUTPUT_DIR/*.bed 
 
 echo "chimera_filter.py took $((end_time - start_time)) seconds."
