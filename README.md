@@ -8,7 +8,10 @@
 ```
 PlantChimera aims to provide a streamlined, efficient, and accurate method for identifying fusion transcripts in plant transcriptomic datasets. It employs a highly configurable pipeline with stringent alignment, filtering to detect fusion events from RNA-Seq data with high confidence. By integrating multiple layers of filtering, from sequence overlap and gene orientation to entropy and junction distance, the pipeline reduces the likelihood of false positives while retaining biologically significant fusion candidates. The source code can be found at [https://github.com/rebminso/PlantChimera.git](https://github.com/rebminso/PlantChimera.git) and is open source and compatible with multiple platforms.
 
-![image](https://github.com/user-attachments/assets/1924d9ac-3648-4f65-9220-5af021d91aa9)
+![image](https://github.com/user-attachments/assets/0112bb73-2f02-4a3b-9afb-8048204714bc)
+
+
+
 
 
 
