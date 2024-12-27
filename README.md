@@ -81,17 +81,17 @@ OR
 ```
 This will download the Docker image and convert it into a Singularity Image File (.sif) in the current directory.
 ```bash
-singularity exec --bind /path/to/local/directory:/data plantchimera.sif /bin/bash
-./PlantChimera.sh -h
+    singularity exec --bind /path/to/local/directory:/data plantchimera.sif /bin/bash
+    ./PlantChimera.sh -h
 ```
 ## 3. Input Data Setup
 a) The input FASTQ files and reference genome/gtf/transcriptome are available for download from [here](https://drive.google.com/drive/folders/1Sg8T8NXMD6t7qQO_SjlHSWl4_HRoEl6p?usp=drive_link ). 
 
 b) Once you've downloaded the files, move them to the `PlantChimera/sample` directory. You can do this manually or using the following command:
 ```bash
-cd PlantChimera
-mkdir sample
-mv /path/to/downloaded/files/*.fastq.gz /path/to/PlantChimera/sample/
+    cd PlantChimera
+    mkdir sample
+    mv /path/to/downloaded/files/*.fastq.gz /path/to/PlantChimera/sample/
 ```
 
 ## 4. Configure workflow
@@ -163,21 +163,21 @@ A small input dataset can be downloaded from [here](https://drive.google.com/dri
 ### Download and configure PlantChimera
 
 ``` bash
-git clone https://github.com/rebminso/PlantChimera.git
-cd PlantChimera
-mkdir sample
+    git clone https://github.com/rebminso/PlantChimera.git
+    cd PlantChimera
+    mkdir sample
 ```
 
 #### - Transfer the downloaded [files](https://drive.google.com/drive/folders/1Sg8T8NXMD6t7qQO_SjlHSWl4_HRoEl6p?usp=drive_link ) to the `/path/to/PlantChimera/sample/` directory. 
 
 ``` bash
-unzip sample/*    
-docker pull nmrtsahu/plantchimera:latest 
-sudo docker run -it -v $PWD:/data nmrtsahu/plantchimera:v1.0 /bin/bash
+    unzip sample/*    
+    docker pull nmrtsahu/plantchimera:latest 
+    sudo docker run -it -v $PWD:/data nmrtsahu/plantchimera:v1.0 /bin/bash
 ```
 ### Run the following command to execute PlantChimera
 ``` bash
-./PlantChimera.sh -r sample/Arabidopsis_thaliana.TAIR10.dna.toplevel.fa -i sample/sample_1.fastq  -I sample/sample_1.fastq -g sample/Arabidopsis_thaliana.TAIR10.56.gtf -T sample/Arabidopsis_thaliana.TAIR10.cdna.all.fa -o output -t 8 -s Ath -p Paralogues/ath_paralogue_gene.txt
+    ./PlantChimera.sh -r sample/Arabidopsis_thaliana.TAIR10.dna.toplevel.fa -i sample/sample_1.fastq  -I sample/sample_1.fastq -g sample/Arabidopsis_thaliana.TAIR10.56.gtf -T sample/Arabidopsis_thaliana.TAIR10.cdna.all.fa -o output -t 8 -s Ath -p Paralogues/ath_paralogue_gene.txt
 ```
 The results will be generated in the `output/` folder 
 
