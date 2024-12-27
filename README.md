@@ -88,12 +88,14 @@ singularity exec --bind /path/to/local/directory:/data plantchimera.sif /bin/bas
 a) The input FASTQ files and reference genome/gtf/transcriptome are available for download from [here](https://drive.google.com/drive/folders/1Sg8T8NXMD6t7qQO_SjlHSWl4_HRoEl6p?usp=drive_link ). 
 
 b) Once you've downloaded the files, move them to the `PlantChimera/sample` directory. You can do this manually or using the following command:
-```bash 
+```bash
+cd PlantChimera
+mkdir sample
 mv /path/to/downloaded/files/*.fastq.gz /path/to/PlantChimera/sample/
 ```
 
 ## 4. Configure workflow
-The configuration of the workflow can be altered by modifying the `config/config.yaml` if and only if required. The imporant directories are `sample`, `scripts`.  
+The configuration of the workflow can be altered by modifying the `config/config.yaml` if and only if required. 
 
 
 ## 5. Run PlantChimera
